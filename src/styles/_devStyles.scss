@@ -1,0 +1,88 @@
+// .dialog-box-card-list {
+//     margin: 10px;
+// }
+.dialog-box-card-list div {
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #dfe1e6 0.5px solid;
+}
+.dialog-box-card-list p,
+.dialog-box-card-list h3 {
+    margin: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.dialog-box-card-list-header {
+    height: 50px;
+    font-weight: 600;
+    border-bottom: #dfe1e6 0.5px solid;
+    background-color: #f4f4f4;
+}
+
+.dialog-box-card {
+    .MuiAccordionSummary-root {
+        padding: 0px !important ;
+    }
+    .MuiPaper-root.MuiPaper-elevation.MuiAccordion-root.Mui-expanded {
+        border-radius: 0px !important;
+    }
+    .MuiPaper-elevation0.MuiAccordion-root {
+        padding: 0px !important;
+    }
+    .MuiAccordionDetails-root {
+        padding: 0 !important;
+    }
+    .MuiAccordionSummary-content {
+        margin: 0 !important;
+    }
+    .MuiAccordionSummary-expandIconWrapper {
+        margin: 8px;
+    }
+}
+
+.dialog-with-content {
+    .dialog-title {
+        font-weight: 800;
+    }
+    .dialog-content-line {
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .MuiDialogContent-root {
+        height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 500px);
+    }
+}
+
+.dialog-box-card .Mui-focusVisible .dialog-box-chip:focus-within > div:first-child {
+    transform: scale(1.1);
+}
+
+.filter-box-card {
+    .MuiAccordionSummary-root {
+        padding: 0px !important ;
+        min-height: 45px !important;
+    }
+    .MuiPaper-root.MuiPaper-elevation.MuiAccordion-root.Mui-expanded {
+        border-radius: 0px !important;
+    }
+    .MuiPaper-elevation0.MuiAccordion-root {
+        padding: 0px !important;
+    }
+    .MuiAccordionDetails-root {
+        padding: 0 !important;
+    }
+    .MuiAccordionSummary-content {
+        margin: 0 !important;
+    }
+    .MuiAccordionSummary-expandIconWrapper {
+        margin: 8px;
+    }
+}
+
+.filter-box-card .main {
+    background-color: #f5f7f9;
+}

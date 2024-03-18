@@ -8,6 +8,9 @@ import { ICelebrityList } from '../../models/celebrity/index';
 export const useCelebrityListHooks = () => {
     const [CelebrityList, setCelebrityList] = useState<Array<ICelebrityList>>([]);
     const [gender, setGender] = useState<Array<Option>>([]);
+    const [edit, setEddit] = useState(false);
+    const [deleteElement, setDeleteElement] = useState(false);
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,5 +41,11 @@ export const useCelebrityListHooks = () => {
     return {
         CelebrityList,
         gender,
+        edit,
+        setEddit,
+        deleteElement,
+        setDeleteElement,
+        search,
+        setSearch,
     };
 };

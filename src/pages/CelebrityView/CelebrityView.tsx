@@ -8,7 +8,7 @@ import { useState } from 'react';
 import AutoCompleteComponent, { Option } from '../../components/common/AutoComplete';
 //import images, { CloseIcon } from '../../assets/images';
 import Dialog from '../../components/common/Dialog/Index';
-import { Button, Chip, DialogContent, DialogTitle, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, Chip, DialogContent, DialogTitle, TextField, DialogActions, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
@@ -106,15 +106,24 @@ const CelebrityViewComponent = () => {
         });
     };
 
+    const handleConfirmClick = () => {
+        //console.log(index, 'fun');
+        setCelebrityList((prevList) => {
+            const newList = prevList.filter((d, i) => i !== deleteIndex);
+            return newList;
+        });
+        setDeleteIndex(null);
+    };
+
     const handleEditClick = (index) => {
         setEditIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
     const handleDeleteClick = (index) => {
-        setDeleteIndex(index);
+        setDeleteIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
-    console.log(editIndex);
+    console.log(Boolean(deleteIndex));
 
     return (
         <>
@@ -133,206 +142,249 @@ const CelebrityViewComponent = () => {
             {CelebrityList.map((data, index) => {
                 //console.log(gender?.filter((d, i) => i === index)[0]?.value);
                 return (
-                    <div key={index} className="dialog-box-card">
-                        <Accordion
-                            expanded={expanded === index}
-                            onChange={handleExpandeChange(index)}
-                            style={{ width: '100%', marginBottom: '25px' }}
-                        >
-                            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                                <Typography width={'100%'} component="div">
-                                    <div className="dialog-box-chip">
-                                        <div
-                                            style={{
-                                                float: 'left',
-                                                fontWeight: 'bold',
-                                                display: 'flex',
-                                                columnGap: '100px',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}
-                                        >
-                                            <img
-                                                style={{ margin: '15px', borderRadius: '50%' }}
-                                                src={data.picture || ''}
-                                                alt="img"
-                                            />
-                                            {editIndex === index ? (
-                                                <TextField
-                                                    name="name"
-                                                    id="Name"
-                                                    label="Name"
-                                                    variant="outlined"
-                                                    value={data.name ? data.name : ''}
-                                                    onChange={(e) => handleNameChange(e, index)}
+                    <>
+                        <div key={index} className="dialog-box-card">
+                            <Accordion
+                                expanded={expanded === index}
+                                onChange={handleExpandeChange(index)}
+                                style={{ width: '100%', marginBottom: '25px' }}
+                            >
+                                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                                    <Typography width={'100%'} component="div">
+                                        <div className="dialog-box-chip">
+                                            <div
+                                                style={{
+                                                    float: 'left',
+                                                    fontWeight: 'bold',
+                                                    display: 'flex',
+                                                    columnGap: '100px',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <img
+                                                    style={{ margin: '15px', borderRadius: '50%' }}
+                                                    src={data.picture || ''}
+                                                    alt="img"
                                                 />
-                                            ) : (
-                                                <h3>{data.first || data.last ? `${data.first} ${data.last}` : ''}</h3>
-                                            )}
+                                                {editIndex === index ? (
+                                                    <TextField
+                                                        name="name"
+                                                        id="Name"
+                                                        label="Name"
+                                                        variant="outlined"
+                                                        value={data.name ? data.name : ''}
+                                                        onChange={(e) => handleNameChange(e, index)}
+                                                    />
+                                                ) : (
+                                                    <h3>
+                                                        {data.first || data.last ? `${data.first} ${data.last}` : ''}
+                                                    </h3>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <div
-                                    style={{
-                                        fontWeight: 'bold',
-                                        display: 'flex',
-                                        columnGap: '100px',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        color: 'grey',
-                                        padding: '0px 50px',
-                                    }}
-                                >
-                                    {editIndex === index ? '' : <h4>Age</h4>}
-                                    {editIndex === index ? '' : <h4>Gender</h4>}
-                                    {editIndex === index ? '' : <h4>Country</h4>}
-                                </div>
-                                <div
-                                    style={{
-                                        marginTop: editIndex === index ? '20px' : '-35px',
-                                        fontWeight: 'bold',
-                                        display: 'flex',
-                                        columnGap: '100px',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        padding: '0px 50px',
-                                    }}
-                                >
-                                    {editIndex === index ? (
-                                        <TextField
-                                            name="age"
-                                            id="age"
-                                            label="Age"
-                                            variant="outlined"
-                                            value={
-                                                data.dob
-                                                    ? data.dob
-                                                        ? 2024 - Number(data.dob?.toString()?.split('-')[0])
-                                                        : ''
-                                                    : ''
-                                            }
-                                            onChange={(e) => handleAgeChange(e, index)}
-                                        />
-                                    ) : (
-                                        <h4>{data.dob ? 2024 - Number(data.dob?.toString()?.split('-')[0]) : ''}</h4>
-                                    )}
-                                    {editIndex === index ? (
-                                        <AutoCompleteComponent
-                                            label="Gender"
-                                            defaultValue={gender?.filter((d, i) => i === index)[0]?.value}
-                                            options={gender}
-                                            onChange={(e: string) =>
-                                                setCelebrityList((prevList) => {
-                                                    const newList = [...prevList];
-                                                    newList[index] = { ...newList[index], gender: e };
-                                                    return newList;
-                                                })
-                                            }
-                                            isMultiSelect={false}
-                                            disabled={false}
-                                            width={278}
-                                        />
-                                    ) : (
-                                        <h4>{data.gender || ''}</h4>
-                                    )}
-                                    {editIndex === index ? (
-                                        <TextField
-                                            name="country"
-                                            id="country"
-                                            label="Country"
-                                            variant="outlined"
-                                            value={data.country ? data.country : ''}
-                                            onChange={(e) => handleCountryChange(e, index)}
-                                        />
-                                    ) : (
-                                        <h4>{data.country || ''}</h4>
-                                    )}
-                                </div>
-                                {/* <div style={{ width: '100%' }}> */}
-                                {editIndex === index ? (
-                                    ''
-                                ) : (
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
                                     <div
                                         style={{
                                             fontWeight: 'bold',
+                                            display: 'flex',
+                                            columnGap: '100px',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
                                             color: 'grey',
                                             padding: '0px 50px',
                                         }}
                                     >
-                                        Description
+                                        {editIndex === index ? '' : <h4>Age</h4>}
+                                        {editIndex === index ? '' : <h4>Gender</h4>}
+                                        {editIndex === index ? '' : <h4>Country</h4>}
                                     </div>
-                                )}
-                                {editIndex === index ? (
-                                    <TextField
+                                    <div
                                         style={{
+                                            marginTop: editIndex === index ? '20px' : '-35px',
                                             fontWeight: 'bold',
+                                            display: 'flex',
+                                            columnGap: '100px',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
                                             padding: '0px 50px',
-                                            marginBottom: '10px',
-                                            marginTop: editIndex === index ? '20px' : '0px',
-                                            width: '50%',
-                                        }}
-                                        name="description"
-                                        id="description"
-                                        label="Description"
-                                        //variant="outlined"
-                                        size="medium"
-                                        multiline
-                                        maxRows={10}
-                                        fullWidth
-                                        value={data.description ? data.description : ''}
-                                        onChange={(e) => handleDescriptionChange(e, index)}
-                                    />
-                                ) : (
-                                    <h4
-                                        style={{
-                                            fontWeight: 'bold',
-                                            padding: '0px 50px',
-                                            marginBottom: '10px',
                                         }}
                                     >
-                                        {data.description || ''}
-                                    </h4>
-                                )}
-                                {/* </div> */}
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        columnGap: '15px',
-                                        justifyContent: 'flex-end',
-                                        alignItems: 'center',
-                                        marginRight: '40px',
-                                        marginBottom: '15px',
-                                    }}
-                                >
+                                        {editIndex === index ? (
+                                            <TextField
+                                                name="age"
+                                                id="age"
+                                                label="Age"
+                                                variant="outlined"
+                                                value={
+                                                    data.dob
+                                                        ? data.dob
+                                                            ? 2024 - Number(data.dob?.toString()?.split('-')[0])
+                                                            : ''
+                                                        : ''
+                                                }
+                                                onChange={(e) => handleAgeChange(e, index)}
+                                            />
+                                        ) : (
+                                            <h4>
+                                                {data.dob ? 2024 - Number(data.dob?.toString()?.split('-')[0]) : ''}
+                                            </h4>
+                                        )}
+                                        {editIndex === index ? (
+                                            <AutoCompleteComponent
+                                                label="Gender"
+                                                defaultValue={gender?.filter((d, i) => i === index)[0]?.value}
+                                                options={gender}
+                                                onChange={(e: string) =>
+                                                    setCelebrityList((prevList) => {
+                                                        const newList = [...prevList];
+                                                        newList[index] = { ...newList[index], gender: e };
+                                                        return newList;
+                                                    })
+                                                }
+                                                isMultiSelect={false}
+                                                disabled={false}
+                                                width={278}
+                                            />
+                                        ) : (
+                                            <h4>{data.gender || ''}</h4>
+                                        )}
+                                        {editIndex === index ? (
+                                            <TextField
+                                                name="country"
+                                                id="country"
+                                                label="Country"
+                                                variant="outlined"
+                                                value={data.country ? data.country : ''}
+                                                onChange={(e) => handleCountryChange(e, index)}
+                                            />
+                                        ) : (
+                                            <h4>{data.country || ''}</h4>
+                                        )}
+                                    </div>
+                                    {/* <div style={{ width: '100%' }}> */}
                                     {editIndex === index ? (
-                                        <>
-                                            <img src={images.Check} alt={'check'} onClick={() => setEditIndex(null)} />
-                                            <img
-                                                src={images.Cancel}
-                                                alt={'cancle'}
-                                                onClick={() => setEditIndex(null)}
-                                            />
-                                        </>
+                                        ''
                                     ) : (
-                                        <>
-                                            <img
-                                                src={images.Edit}
-                                                alt={'edit'}
-                                                onClick={() => handleEditClick(index)}
-                                            />
-                                            <img
-                                                src={images.Delete}
-                                                alt={'delete'}
-                                                onClick={() => handleDeleteClick(index)}
-                                            />
-                                        </>
+                                        <div
+                                            style={{
+                                                fontWeight: 'bold',
+                                                color: 'grey',
+                                                padding: '0px 50px',
+                                            }}
+                                        >
+                                            Description
+                                        </div>
                                     )}
-                                </div>
-                            </AccordionDetails>
-                        </Accordion>
-                    </div>
+                                    {editIndex === index ? (
+                                        <TextField
+                                            style={{
+                                                fontWeight: 'bold',
+                                                padding: '0px 50px',
+                                                marginBottom: '10px',
+                                                marginTop: editIndex === index ? '20px' : '0px',
+                                                width: '50%',
+                                            }}
+                                            name="description"
+                                            id="description"
+                                            label="Description"
+                                            //variant="outlined"
+                                            size="medium"
+                                            multiline
+                                            maxRows={10}
+                                            fullWidth
+                                            value={data.description ? data.description : ''}
+                                            onChange={(e) => handleDescriptionChange(e, index)}
+                                        />
+                                    ) : (
+                                        <h4
+                                            style={{
+                                                fontWeight: 'bold',
+                                                padding: '0px 50px',
+                                                marginBottom: '10px',
+                                            }}
+                                        >
+                                            {data.description || ''}
+                                        </h4>
+                                    )}
+                                    {/* </div> */}
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            columnGap: '15px',
+                                            justifyContent: 'flex-end',
+                                            alignItems: 'center',
+                                            marginRight: '40px',
+                                            marginBottom: '15px',
+                                        }}
+                                    >
+                                        {editIndex === index ? (
+                                            <>
+                                                <img
+                                                    src={images.Check}
+                                                    alt={'check'}
+                                                    onClick={() => setEditIndex(null)}
+                                                />
+                                                <img
+                                                    src={images.Cancel}
+                                                    alt={'cancle'}
+                                                    onClick={() => setEditIndex(null)}
+                                                />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <img
+                                                    src={images.Edit}
+                                                    alt={'edit'}
+                                                    onClick={() => handleEditClick(index)}
+                                                />
+                                                <img
+                                                    src={images.Delete}
+                                                    alt={'delete'}
+                                                    onClick={() => handleDeleteClick(index)}
+                                                />
+                                            </>
+                                        )}
+                                    </div>
+                                </AccordionDetails>
+                            </Accordion>
+                        </div>
+                        <Dialog
+                            classes="confirmation-dialog"
+                            maxWidth="xs"
+                            open={deleteIndex === 0 ? true : Boolean(deleteIndex)}
+                            handleClose={() => setDeleteIndex(null)}
+                        >
+                            <DialogTitle component="div">
+                                <Button title={'close'} onClick={() => setDeleteIndex(null)}>
+                                    <img src={images.Close} alt={'close'} />
+                                </Button>
+                            </DialogTitle>
+                            <DialogContent>
+                                <p>Are you sure you want to delete?</p>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    variant="contained"
+                                    title="delet"
+                                    color="primary"
+                                    onClick={() => handleConfirmClick()}
+                                >
+                                    Delete
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    title="cancel"
+                                    color="primary"
+                                    onClick={() => setDeleteIndex(null)}
+                                >
+                                    {'Cancel'}
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </>
                 );
             })}
         </>

@@ -7,7 +7,7 @@ export const useCelebrityListHooks = () => {
     const [CelebrityList, setCelebrityList] = useState<Array<ICelebrityList>>([]);
     const [gender, setGender] = useState<Array<Option>>([]);
     const [editIndex, setEditIndex] = useState<number | null>(null);
-    const [deleteIndex, setDeleteIndex] = useState<number | null>(null); // New state to keep track of which accordion is in delete mode
+    const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
@@ -54,8 +54,8 @@ export const useCelebrityListHooks = () => {
         gender,
         editIndex,
         setEditIndex,
-        deleteIndex, // Expose deleteIndex state
-        setDeleteIndex, // Expose the function to set the deleteIndex
+        deleteIndex,
+        setDeleteIndex,
         search,
         setSearch,
         setCelebrityList,

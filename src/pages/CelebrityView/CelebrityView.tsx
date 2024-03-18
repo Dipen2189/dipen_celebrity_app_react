@@ -63,13 +63,90 @@ const CelebrityViewComponent = () => {
                         <Accordion
                             expanded={expanded === index}
                             onChange={handleExpandeChange(index)}
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', marginBottom: '25px' }}
                         >
                             <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                                <Typography width={'100%'} component="div"></Typography>
+                                <Typography width={'100%'} component="div">
+                                    {' '}
+                                    <div className="dialog-box-chip">
+                                        <div
+                                            style={{
+                                                float: 'left',
+                                                fontWeight: 'bold',
+                                                display: 'flex',
+                                                columnGap: '100px',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <img
+                                                style={{ margin: '15px', borderRadius: '50%' }}
+                                                src={data.picture ? data.picture : ''}
+                                                alt="img"
+                                            />
+                                            <h3>{data.first || data.last ? `${data.first} ${data.last}` : ''}</h3>
+                                        </div>
+                                    </div>
+                                </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <div className="dialog-box-card-list"></div>
+                                <div
+                                    style={{
+                                        fontWeight: 'bold',
+                                        display: 'flex',
+                                        columnGap: '100px',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        color: 'grey',
+                                        padding: '0px 50px',
+                                    }}
+                                >
+                                    <h4>Age</h4>
+                                    <h4>Gender</h4>
+                                    <h4>Country</h4>
+                                </div>
+                                <div
+                                    style={{
+                                        marginTop: '-35px',
+                                        fontWeight: 'bold',
+                                        display: 'flex',
+                                        columnGap: '100px',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0px 50px',
+                                    }}
+                                >
+                                    <h4>{data.dob ? 2024 - Number(data.dob?.toString()?.split('-')[0]) : ''}</h4>
+                                    <h4>{data.gender ? data.gender : ''}</h4>
+                                    <h4>{data.country ? data.country : ''}</h4>
+                                </div>
+                                <div
+                                    style={{
+                                        fontWeight: 'bold',
+                                        //display: 'flex',
+                                        //columnGap: '100px',
+                                        //justifyContent: 'space-evenly',
+                                        //alignItems: 'center',
+                                        color: 'grey',
+                                        padding: '0px 50px',
+                                    }}
+                                >
+                                    Description
+                                </div>
+                                <div
+                                    style={{
+                                        //marginTop: '-35px',
+                                        fontWeight: 'bold',
+                                        //display: 'flex',
+                                        //columnGap: '100px',
+                                        //justifyContent: 'space-evenly',
+                                        //alignItems: 'center',
+                                        padding: '0px 50px',
+                                        marginBottom: '10px',
+                                    }}
+                                >
+                                    {data.description ? data.description : ''}
+                                </div>
                             </AccordionDetails>
                         </Accordion>
                     </div>

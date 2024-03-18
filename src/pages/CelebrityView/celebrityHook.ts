@@ -27,7 +27,11 @@ export const useCelebrityListHooks = () => {
         if (search === '' || search === null || search === undefined) {
             setCelebrityList(
                 getCelebrityList.map((value) => {
-                    return { ...value, name: `${value.first} ${value.last}` };
+                    return {
+                        ...value,
+                        name: `${value.first} ${value.last}`,
+                        age: value.dob ? `${2024 - Number(value.dob?.toString()?.split('-')[0])}` : '',
+                    };
                 }),
             );
         } else {
@@ -59,5 +63,6 @@ export const useCelebrityListHooks = () => {
         search,
         setSearch,
         setCelebrityList,
+        getClebrity,
     };
 };

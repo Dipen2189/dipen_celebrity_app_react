@@ -61,6 +61,7 @@ const CelebrityViewComponent = () => {
         setSearch,
         editIndex,
         setEditIndex,
+        getClebrity,
     } = useCelebrityListHooks();
     const [expanded, setExpanded] = useState<number | null>();
 
@@ -82,9 +83,7 @@ const CelebrityViewComponent = () => {
             const newList = [...prevList];
             newList[index] = {
                 ...newList[index],
-                dob: `${value}-${newList[index]?.dob?.toString()?.split('-')[1]}-${
-                    newList[index]?.dob?.toString()?.split('-')[2]
-                }`,
+                age: value,
             };
             return newList;
         });
@@ -123,7 +122,7 @@ const CelebrityViewComponent = () => {
         setDeleteIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
-    console.log(Boolean(deleteIndex));
+    //console.log(Boolean(deleteIndex));
 
     return (
         <>
@@ -218,19 +217,11 @@ const CelebrityViewComponent = () => {
                                                 id="age"
                                                 label="Age"
                                                 variant="outlined"
-                                                value={
-                                                    data.dob
-                                                        ? data.dob
-                                                            ? 2024 - Number(data.dob?.toString()?.split('-')[0])
-                                                            : ''
-                                                        : ''
-                                                }
+                                                value={data.age}
                                                 onChange={(e) => handleAgeChange(e, index)}
                                             />
                                         ) : (
-                                            <h4>
-                                                {data.dob ? 2024 - Number(data.dob?.toString()?.split('-')[0]) : ''}
-                                            </h4>
+                                            <h4>{data.age ? data.age : ''}</h4>
                                         )}
                                         {editIndex === index ? (
                                             <AutoCompleteComponent
@@ -330,7 +321,10 @@ const CelebrityViewComponent = () => {
                                                 <img
                                                     src={images.Cancel}
                                                     alt={'cancle'}
-                                                    onClick={() => setEditIndex(null)}
+                                                    onClick={() => {
+                                                        setEditIndex(null);
+                                                        getClebrity();
+                                                    }}
                                                 />
                                             </>
                                         ) : (
@@ -368,7 +362,7 @@ const CelebrityViewComponent = () => {
                             <DialogActions>
                                 <Button
                                     variant="contained"
-                                    title="delet"
+                                    title="delete"
                                     color="primary"
                                     onClick={() => handleConfirmClick()}
                                 >

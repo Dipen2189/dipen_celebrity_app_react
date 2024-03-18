@@ -9,4 +9,5 @@ export interface ICelebrityList {
     country: string;
     description: string;
     name?: string;
+    age: string;
 }

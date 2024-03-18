@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { Option } from '../../components/common/AutoComplete';
 import { getCelebrityList } from '../../services/celebrityList/celebrity-list-service';
@@ -8,8 +6,8 @@ import { ICelebrityList } from '../../models/celebrity/index';
 export const useCelebrityListHooks = () => {
     const [CelebrityList, setCelebrityList] = useState<Array<ICelebrityList>>([]);
     const [gender, setGender] = useState<Array<Option>>([]);
-    const [edit, setEddit] = useState(false);
-    const [deleteElement, setDeleteElement] = useState(false);
+    const [editIndex, setEditIndex] = useState<number | null>(null);
+    const [deleteIndex, setDeleteIndex] = useState<number | null>(null); // New state to keep track of which accordion is in delete mode
     const [search, setSearch] = useState('');
 
     useEffect(() => {
@@ -22,30 +20,44 @@ export const useCelebrityListHooks = () => {
         };
 
         fetchData();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [search]);
 
     const getClebrity = () => {
-        setCelebrityList(getCelebrityList);
+        if (search === '' || search === null || search === undefined) {
+            setCelebrityList(
+                getCelebrityList.map((value) => {
+                    return { ...value, name: `${value.first} ${value.last}` };
+                }),
+            );
+        } else {
+            setCelebrityList(
+                CelebrityList.filter((value) =>
+                    value?.name?.toLocaleLowerCase()?.startsWith(search?.toLocaleLowerCase()),
+                ),
+            );
+        }
     };
 
     const getGender = () => {
         setGender([
-            { value: 'MALE', label: 'Male' },
-            { value: 'FEMALE', label: 'Female' },
-            { value: 'TRANSGENDER', label: 'Transgender' },
-            { value: 'RATHER_NOT_SAY', label: 'Rather not say' },
-            { value: 'OTHER', label: 'other' },
+            { value: 'Male', label: 'Male' },
+            { value: 'Female', label: 'Female' },
+            { value: 'Transgender', label: 'Transgender' },
+            { value: 'Rather not say', label: 'Rather not say' },
+            { value: 'other', label: 'other' },
         ]);
     };
 
     return {
         CelebrityList,
         gender,
-        edit,
-        setEddit,
-        deleteElement,
-        setDeleteElement,
+        editIndex,
+        setEditIndex,
+        deleteIndex, // Expose deleteIndex state
+        setDeleteIndex, // Expose the function to set the deleteIndex
         search,
         setSearch,
+        setCelebrityList,
     };
 };
